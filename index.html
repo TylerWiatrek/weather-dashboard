@@ -4,9 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./style.css" />
     <title>Weather Dashboard</title>
 </head>
 <body>
-    
+    <header class="header-section bg-primary p-3">
+        <h1 class="header-title text-light text-center">
+            Weather Dashboard
+        </h1>
+    </header>
+    <main>
+        <div class="container search-form">
+            <div class="search-header row">
+                <div class="search-text col-12">
+                    <h3>
+                        Search for a City:
+                    </h3>
+                </div>
+                <form id="weather-form">
+                    <label class="weather-label" for="city"></label>
+                    <input name="city" id="city" type="text" class="form-city m-2 col-12" />
+                    <button type="submit" class="bg-primary text-light p-1 m-2 col-12">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="past-cities row">
+                <div id="past-search">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div id="current-city" class="row">
+                <ul class="weather-list">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="future-weather row">
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </main>
+
+
+
+
+
+
+
 </body>
 </html>
