@@ -1,3 +1,8 @@
 .search-form {
     float: left;
 }
+
+#past-search {
+    float: left;
+    top: 50px;
+}
