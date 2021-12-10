@@ -4,12 +4,9 @@ var currentCityEl = document.querySelector("#current-city");
 var futureWeatherEl = document.querySelector("#future-weather");
 var cityInputEl = document.querySelector("#city");
 var pastCityButtonEl = document.getElementById("past-search");
-var latitude = 29.4241;
-var longitude = 98.4936;
 
 var getCoordinates = function(city) {
     var apiUrlCoordinates = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=2ea8fea258bbf4c7d30e6cc6067e3356`
-    //var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latit+ "&lon=" + longitude + "&appid=2ea8fea258bbf4c7d30e6cc6067e3356";
     fetch(apiUrlCoordinates)
         .then(function(response) {
             return response.json()
@@ -25,7 +22,6 @@ var getCoordinates = function(city) {
 var getWeather = function(coordinates) {
     var {lat} = coordinates;
     var {lon} = coordinates;
-    var city = coordinates.name;
     console.log(lat);
     console.log(lon);
     var apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=2ea8fea258bbf4c7d30e6cc6067e3356`
@@ -38,15 +34,20 @@ var getWeather = function(coordinates) {
     }).catch(function(err){
         console.log(err);
 
-    });       
+    });
+    
 }
- var renderWeather = function(city, data){
-     renderCurrentForecast(city, data.current, data.timezone);
-     renderFiveDayForecast(data.daily, data.timezone);
+var renderWeather = function(city, data){
+    renderCurrentForecast(city, data.current);
+    renderFiveDayForecastDayOne(data.daily[0]);
+    renderFiveDayForecastDayTwo(data.daily[1]);
+    renderFiveDayForecastDayThree(data.daily[2]);
+    renderFiveDayForecastDayFour(data.daily[3]);
+    renderFiveDayForecastDayFive(data.daily[4]);
 
  }
 
- var renderCurrentForecast = function(city, weather, timezone) {
+ var renderCurrentForecast = function(city, weather) {
      var card = document.createElement("div");
      var cardContainer = document.createElement("div");
      var cardHeader = document.createElement("h2");
@@ -57,8 +58,9 @@ var getWeather = function(coordinates) {
      var cardUV = document.createElement("p");
      var uvButton = document.createElement("button");
      uvButton.classList.add("btn", "btn-sm");
-     card.setAttribute("class", "card");
-     cardContainer.setAttribute("class", "card-body");
+     card.classList.add("card", "main-weather");
+     card.setAttribute("style", "width: 100rem;");
+     cardContainer.classList.add("card-body");
      card.append(cardContainer);
      cardHeader.setAttribute("class", "card-title");
      cardIcon.setAttribute("src", `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`)
@@ -66,9 +68,11 @@ var getWeather = function(coordinates) {
      cardTemp.setAttribute("class", "card-text");
      cardWind.setAttribute("class", "card-text");
      cardHumidity.setAttribute("class", "card-text");
-     cardHeader.textContent = `${city}`;
+     cardHeader.textContent = cityInputEl.value.trim();
      cardHeader.append(cardIcon);
-     cardTemp.textContent = `Temperature: ${weather.temp} °F`
+     var cityTempDecimal = (weather.temp - 273.15) * (9/5) + 32;
+     var cityTemp = cityTempDecimal.toFixed(2);
+     cardTemp.textContent = `Temperature: ${cityTemp} °F`
      cardWind.textContent = `Wind: ${weather.wind_speed} mph`
      cardHumidity.textContent = `Humidity: ${weather.humidity}`
      cardUV.textContent = `UV Index: `
@@ -90,25 +94,51 @@ var getWeather = function(coordinates) {
 
  }
 
- var renderFiveDayForecast = function(weather, timezone) {
+ var renderFiveDayForecastDayOne = function(weather) {
+    var card = document.createElement("div");
+    var cardContainer = document.createElement("div");
+    var cardHeader = document.createElement("h2");
+    var cardIcon = document.createElement("img");
+    var cardTemp = document.createElement("p");
+    var cardWind = document.createElement("p");
+    var cardHumidity = document.createElement("p");
+    var cardUV = document.createElement("p");
+    var uvButton = document.createElement("button");
+    uvButton.classList.add("btn", "btn-sm");
+    card.classList.add("card", "main-weather", "daily-one");
+    card.setAttribute("style", "width: 20rem;");
+    cardContainer.classList.add("card-body");
+    card.append(cardContainer);
+    cardHeader.setAttribute("class", "card-title");
+    cardIcon.setAttribute("src", `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`)
+    cardIcon.setAttribute("class", "weather-img");
+    cardTemp.setAttribute("class", "card-text");
+    cardWind.setAttribute("class", "card-text");
+    cardHumidity.setAttribute("class", "card-text");
+    cardHeader.textContent = cityInputEl.value.trim();
+    cardHeader.append(cardIcon);
+    var cityTempDecimal = (weather.temp.day - 273.15) * (9/5) + 32;
+    var cityTemp = cityTempDecimal.toFixed(2);
+    cardTemp.textContent = `Temperature: ${cityTemp} °F`
+    cardWind.textContent = `Wind: ${weather.wind_speed} mph`
+    cardHumidity.textContent = `Humidity: ${weather.humidity}`
+    cardUV.textContent = `UV Index: `
+    if (weather.uvi < 3) {
+        uvButton.classList.add("btn-success")
+    } else if (weather.uvi < 7) {
+        uvButton.classList.add("btn-warning")
+    } else {
+        uvButton.classList.add("btn-danger")
+    }
+    uvButton.textContent = weather.uvi
+    cardContainer.append(cardHeader, cardTemp, cardWind, cardHumidity);
+    cardUV.append(uvButton);
+    cardContainer.append(cardUV);
+    futureWeatherEl.innerHTML = "";
+    futureWeatherEl.append(card);
 
  }
 
-// var formWeather = function (event) {
-//     //event.preventDefault();
-//     var currentCity = cityInputEl.value.trim();
-//     //console.log(currentCity);
-//     var pastCityEl = document.createElement("button");
-//     pastCityEl.setAttribute("type", "submit");
-//     pastCityEl.setAttribute("class", "col-12 bg-primary text-light");
-//     // pastCityEl.setAttribute("value", currentCity);
-//     pastCityEl.textContent(currentCity);
-//     pastCityButtonEl.appendChild(pastCityEl);
-//         //console.log(currentCity);
-    
-
-//     //pastCityButton.appendChild(pastCityEl);
-// }
 
 var submitWeather = function (event) {
     event.preventDefault();

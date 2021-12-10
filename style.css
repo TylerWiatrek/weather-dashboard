@@ -6,3 +6,16 @@
     float: left;
     top: 50px;
 }
+
+.main-weather {
+    position: relative;
+    right: 500px;
+    font-size: 24px;
+}
+
+.daily-one {
+    position: relative;
+    right: 100px;
+    top: 50px;
+    font-size: 16px;
+}
