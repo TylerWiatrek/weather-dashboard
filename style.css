@@ -13,9 +13,55 @@
     font-size: 24px;
 }
 
+.current-weather-title {
+    position: relative;
+    right: 425px;
+    font-size: 30px;
+}
+
+.future-weather-title {
+    position: relative;
+    left: 325px;
+    top: 30px;
+    font-size: 30px;
+}
+
+
 .daily-one {
     position: relative;
     right: 100px;
     top: 50px;
-    font-size: 16px;
+    font-size: 14px;
+}
+
+.daily-two {
+    position: relative;
+    right: 80px;
+    top: 50px;
+    font-size: 14px;
+}
+
+.daily-three {
+    position: relative;
+    right: 60px;
+    top: 50px;
+    font-size: 14px;
+}
+
+.daily-four {
+    position: relative;
+    right: 40px;
+    top: 50px;
+    font-size: 14px;
+}
+
+.daily-five {
+    position: relative;
+    right: 20px;
+    top: 50px;
+    font-size: 14px;
+}
+
+.future-forecast h2 {
+    font-size: 20px;
 }
