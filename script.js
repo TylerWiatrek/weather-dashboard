@@ -1,48 +1,82 @@
+// Establishing my global variables here that I will call in the later functions
+// These will grab the id tags I set in my html file so I can dynamically create elements
 
+// This weather form will mainly be use for the click add event listener to initialize the main function 
+// once the search button is clicked
 var weatherFormEl = document.querySelector("#weather-form");
+// This current city element will be used in the current city function to append the content to the main current weather div
 var currentCityEl = document.querySelector("#current-city");
+// This five day forecast element will be used to dynamically display the five day forecast text content above the weather forecast
 var fiveDayForecastEl = document.querySelector("#five-day-forecast");
+// The next five elements will be use to create each of the 5 day forecast cards for the inputted city
 var futureWeatherOneEl = document.querySelector("#future-weather-one");
 var futureWeatherTwoEl = document.querySelector("#future-weather-two");
 var futureWeatherThreeEl = document.querySelector("#future-weather-three");
 var futureWeatherFourEl = document.querySelector("#future-weather-four");
 var futureWeatherFiveEl = document.querySelector("#future-weather-five");
+// This city input will be used to grab the city name. The term cityInputEl.value.trim will be used later in the code
+// This will grab the value that the user inputted into the search bar. This will be used later in the code to get coordinates, weather, etc.
 var cityInputEl = document.querySelector("#city");
+// This button element will be used to dynamically create the past cities search buttons below the search button
 var pastCityButtonEl = document.getElementById("past-search");
 
+// This function is used to grab the coordinates from the inputted city. Since the user just inputs a city and not coordinates,
+// the coordinates must be grabbed in order to get the right data. Starting the function here that has the parameter of city.
 var getCoordinates = function(city) {
+    // declaring a variable here to call the api. this api is used to grab the coordinates for the inputted city.
     var apiUrlCoordinates = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=2ea8fea258bbf4c7d30e6cc6067e3356`
+    // using fetch here to return the data from this api call
     fetch(apiUrlCoordinates)
         .then(function(response) {
             return response.json()
         }).then(function(data){
+            // using the console.log here to determine if the coordinates were grabbed correctly
             console.log(data.coord)
+            // calling the getWeather function here so that we can pass through the data.coord parameter to correctly display
+            // the coordinates to the function. Since the API uses coordinates and not a city name, we need to pass the coordinates through 
+            // to get the proper location. 
+            // The function needs to be called here in order to keep the data flowing.
             getWeather(data.coord)
-        }).catch(function(err){
-            console.log(err);
-
         });       
     };
 
+// This function is being created to get the actual weather data that will be used later in the code.
+// The API called in this function needs coordinates, which was obtained from the above function getCoordinates.
+// Started the function here passing through coordinates as the parameters
 var getWeather = function(coordinates) {
+    // declaring the latitude and longitude values here. Using {} to grab the lat and lon objects.
     var {lat} = coordinates;
     var {lon} = coordinates;
+    // console.log the lat and lon values to ensure that the code is producing the correct longitude and latitue values for the city.
     console.log(lat);
     console.log(lon);
+    // Once the latitude and longitue have been identified and stored in variables, now the API for the weather info needs to be called
+    // Here the API is called with 2 values that were declared previously (lat) and (lon). Without these, the API would return an error.
+    // This API will return all the weather data needed in order to dynamically created the webpage.
     var apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=2ea8fea258bbf4c7d30e6cc6067e3356`
+    // fetching the data here and then returning a response
     fetch(apiUrl)
     .then(function(response) {
         return response.json()
     }).then(function(data){
+        // console.log the data here in order to ensure the right data is being returned.
+        // Once the data has been identified and is correct, another function will need to be called.
         console.log(data)
+        // Calling the renderWeather function here, the renderWeather function is set a few lines down.
+        // This is the main function that will actually display the data the user is looking for.
+        // Passing through 2 parameters in this function. City and data. The city is needed in order to ensure the function
+        // is obtaining the right data for the city inputting by the user and not a random city. The data is being used in order
+        // to gather and sort the data created by the fetch/return calls of the API. By using the city and data, this function
+        // should be able to run and get the correct data for the city inputted.
         renderWeather(city, data);
-    }).catch(function(err){
-        console.log(err);
-
     });
     
 }
+// Here the renderWeather function is being created, this function was previously called in the above lines.
+// Inside this function, there is multiple other functions being called.
 var renderWeather = function(city, data){
+    // The first function being called is renderCurrentForecast. This function created later will generate the current weather 
+    // for the city inputted by the user.
     renderCurrentForecast(city, data.current);
     renderFiveDayForecastDayOne(data.daily[0]);
     renderFiveDayForecastDayTwo(data.daily[1]);
@@ -347,44 +381,6 @@ var submitWeather = function (event) {
 
 
 }
-
-// var pastCities = function () {
-//     var pastCityEl = document.createElement("button");
-//     pastCityEl.setAttribute("type", "submit");
-//     pastCityEl.setAttribute("class", "col-12 bg-primary text-light");
-//     pastCityEl.setAttribute("value", currentCity);
-//     pastCityEl.textContent = currentCity;
-    
-
-//     pastCityButton.appendChild(pastCityEl);
-    
-
-// }
-
-// var getWeather = function(event) {
-//     event.preventDefault();
-
-// }
-
-// var cityLocation = function(position) {
-//     var latitude = navigator.geolocation.position.coords.latitude;
-//     var longitude = navigator.geolocation.position.coords.longitude;
-//     console.log(latitude);
-//     console.log(longitude);
-// }
-
-// cityLocation();
-
-
-
-
-//getCityWeather();
-
-
-//formWeather();
-//pastCities();
-
-
 
 
 
