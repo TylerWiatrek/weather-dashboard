@@ -6,15 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./style.css" />
+    <!--Setting the title which will use for the browser tab-->
     <title>Weather Dashboard</title>
 </head>
 <body>
+    <!--Header section here which will display the webpage title-->
     <header class="header-section bg-primary p-3">
         <h1 class="header-title text-light text-center">
             Weather Dashboard
         </h1>
     </header>
     <main>
+        <!--Setting the main search section here. This is where the user will enter the city that want to search for.-->
         <div class="container search-form">
             <div class="search-header row">
                 <div class="search-text col-12">
@@ -22,6 +25,7 @@
                         Search for a City:
                     </h3>
                 </div>
+                <!--Setting the search form here-->
                 <form id="weather-form">
                     <label class="weather-label" for="city"></label>
                     <input name="city" id="city" type="text" class="form-city m-2 col-12" />
@@ -34,7 +38,7 @@
                 </div>
             </div>
         </div>
-
+        <!--Creating div element here to house the current city weather-->
         <div class="container">
             <div id="current-city" class="row">
                 <div class="weather-list">
@@ -42,13 +46,14 @@
                 </div>
             </div>
         </div>
+        <!--Creating div element here to house the future forecast title text content-->
         <div class="container">
             <div id="five-day-forecast" class="row">
 
             </div>
         </div>
 
-      
+        <!--Creating div element here to house the future 5 day weather forecast-->
         <div class="container">
             <div class="row future-forecast">
                 <div id="future-weather-one" class= "col-2">
@@ -70,25 +75,10 @@
 
 
             </div>
-            <div id="future-weather-one" class= "row">
-
-            </div>
+            
         </div>
 
-        
-
-
-
-
-
-
-
     </main>
-
-
-
-
-
 
     <script src="./script.js"></script>
 </body>

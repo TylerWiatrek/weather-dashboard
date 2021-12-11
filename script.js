@@ -130,25 +130,38 @@ var renderWeather = function(city, data){
      var cardHumidity = document.createElement("p");
      var cardUV = document.createElement("p");
      var uvButton = document.createElement("button");
+     // Adding classes from bootstrap here
      uvButton.classList.add("btn", "btn-sm");
      card.classList.add("card", "main-weather");
      card.setAttribute("style", "width: 100rem;");
      cardContainer.classList.add("card-body");
+     // appending the cardContainter div to the card div 
      card.append(cardContainer);
+     // setting attributes here for each of the above variables that were dynamically created. using bootstrap and css, these variables
+     // can be created to look inline with one another. The cardIcon needs a src attribute in order to pull the icon from the url.
      cardHeader.setAttribute("class", "card-title");
      cardIcon.setAttribute("src", `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`)
      cardIcon.setAttribute("class", "weather-img");
      cardTemp.setAttribute("class", "card-text");
      cardWind.setAttribute("class", "card-text");
      cardHumidity.setAttribute("class", "card-text");
+     // setting the textContent here with the value that the user inputted. using trim() to trim off any unnecessary spacing the user
+     // might have entered.
      cardHeader.textContent = cityInputEl.value.trim();
+     // appending the cardIcon to the cardHeader h2 element to display the current weather icon that was pulled from the url.
      cardHeader.append(cardIcon);
+     // created two variables here to help trim the temperature decimal places to 2. Since the weather api give the temperature value
+     // in Kelvin, the temperature must be converted into Fahrenheit.
      var cityTempDecimal = (weather.temp - 273.15) * (9/5) + 32;
      var cityTemp = cityTempDecimal.toFixed(2);
+     // Here the actual text content of the cardTemp, cardWind, cardHumidity, and cardUV p tag is being displayed. Using back ticks 
+     // to display the text content and using ${} tags to pull the correct data from the api.
      cardTemp.textContent = `Temperature: ${cityTemp} °F`
      cardWind.textContent = `Wind: ${weather.wind_speed} mph`
      cardHumidity.textContent = `Humidity: ${weather.humidity}`
      cardUV.textContent = `UV Index: `
+     // using an if statement here to see how bad the uv index is. If the uv is good, using bootstrap to give a green color, if 
+     // uv is not good, but not dangeroud, giving the uv index a yellow color. If the uv is bad, giving the uv index a red color.
      if (weather.uvi < 3) {
          uvButton.classList.add("btn-success")
      } else if (weather.uvi < 7) {
@@ -156,21 +169,36 @@ var renderWeather = function(city, data){
      } else {
          uvButton.classList.add("btn-danger")
      }
+     // giving the uv button element the text content of the uvi value from the api
      uvButton.textContent = weather.uvi
+     // The above values still need to be appended into the container div created above. Here all those values are being appended to 
+     // the div element.
      cardContainer.append(cardHeader, cardTemp, cardWind, cardHumidity);
      cardUV.append(uvButton);
      cardContainer.append(cardUV);
+     // creating the text that will display on the card div here, then we need to append those values to the elements previously created
      currentCityEl.innerHTML = "";
      currentCityEl.append(headerTitle);
      fiveDayForecastEl.append(futureTitle);
      currentCityEl.append(card);
+     // using localStorage to save the city that the user inputted.
      localStorage.setItem("City", cityInputEl.value.trim());
+     // appending the city info into the previousButtonEl element that was created, this will display the previous city that the user
+     // inputted last as a button below the search button.
      pastCityButtonEl.append(previousCity);
      
 
 
  }
 
+ // Here the first function that is being created for the future forecast, following along with comments and code that was used above 
+ // for the current weather, a lot of the same code is being repeated here. However, instead of getting data from the current weather, the
+ // data needs to be obtained for the future. This data is stored in the daily array in the api. For the first day here, the data that gets returned 
+ // needs to be from array position 0. Some changes that will take place in the following code from the current weather function is the classList for the card
+ // this will be changed to classes of daily-one, daily-two, daily-three, daily-four, and daily-five respectively. Also, the width of the card is smaller 
+ // than the current weather card. Using a width here of 20rem. Finally the data needs to be appended onto the dynamically created element. For the first function, 
+ // the data will be appended to futureWeatherOneEl. Then the second function will be appended to futureWeatherTwoEl, the third to futureWeatherThreeEl, and so forth.
+ // the following five functions follow this same structure with slight changes to each of them.
  var renderFiveDayForecastDayOne = function(weather) {
   
     var card = document.createElement("div");
@@ -397,6 +425,8 @@ var renderWeather = function(city, data){
 
  }
 
+ // The final function in the code takes the click event and runs it on the click. This will run the getCoordinates function
+ // thus running the other functions as well.
 
 var submitWeather = function (event) {
     event.preventDefault();
@@ -406,8 +436,7 @@ var submitWeather = function (event) {
 
 }
 
-
-
-
+// adding click event listeners to both search buttons created. One for the current searched city, the other for the past city button
+// that was dynamically created.
 pastCityButtonEl.addEventListener("submit", submitWeather);
 weatherFormEl.addEventListener("submit", submitWeather);
