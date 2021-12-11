@@ -77,7 +77,13 @@ var getWeather = function(coordinates) {
 var renderWeather = function(city, data){
     // The first function being called is renderCurrentForecast. This function created later will generate the current weather 
     // for the city inputted by the user.
+    // The first renderCurrentForecast function here, the city and data.current will be used. The data.current is needed because
+    // this will display the current weather for the city inputted.
     renderCurrentForecast(city, data.current);
+    // The following next five functions being declared will call the data that is being displayed in the daily array. The api data
+    // displays the future forecast in the daily array, so day one would be position daily[0] and so forth. This will be repeated for 
+    // however many days the forecast needs to display. Since there is a 5 day forecast being display, the data.daily needs to be called
+    // five times starting at data.daily[0] for postion 1 in the array, all the way to data.daily[4] for position 5 in the array.
     renderFiveDayForecastDayOne(data.daily[0]);
     renderFiveDayForecastDayTwo(data.daily[1]);
     renderFiveDayForecastDayThree(data.daily[2]);
@@ -86,17 +92,35 @@ var renderWeather = function(city, data){
 
  }
 
+ // This is the first function that needs to be called. This will render the current forecast for the inputted city and give us the 
+ // weather data needed from the api call
  var renderCurrentForecast = function(city, weather) {
+     // Dynamically creating the card element here starting with the h2 tag that will display the text "Current Weather"
+     // Giving this dynamically created element the class of current-weather-title to later change the style in css.
      var headerTitle = document.createElement("h2");
      headerTitle.classList.add("current-weather-title");
      headerTitle.textContent = "Current Weather";
+     // Dynamically creating another h2 tag here for the future weather section. Giving this h2 tag the class of
+     // future-weather-title to later change the style in css. Also giving this h2 tag the text content of "5 Day Forecast"
      var futureTitle = document.createElement("h2");
      futureTitle.classList.add("future-weather-title");
      futureTitle.textContent = "5 Day Forecast";
+     // Dynamically creating the button element here that will display the previous city the user searched for. Using bootstrap styling
+     // there are 5 different styles being used in the class list. The text content of this button needs to be the previous city
+     // that was searched for so cityInputEl.value.trim() will be used as the text content since that is the value that the user
+     // inputted. trim() is being used to trim off any unnecessary spaceing the user might be entered in the search box.
      var previousCity = document.createElement("button");
      previousCity.setAttribute("type", "submit");
      previousCity.classList.add("bg-info", "text-light", "p-1", "m-2", "col-12")
      previousCity.textContent = cityInputEl.value.trim();
+     // Declaring multiple variables here starting with card and giving it a div element. Next the cardContainer is being created
+     // using another div element. Next the cardHeader is being created with an h2 tag that later display the city name. Next the
+     // cardIcon is being created that will later hold the weather icon symbol. Next, the cardTemp is being created with a p tag.
+     // This p tag will hold the current city's temperature that will be pulled from the api. Next, the cardWind is being created
+     // with a p tag, this will hold the value of the wind_speed that is being pulled from the api. Next, the cardHumidity is being
+     // created with a p tag, this will hold the humidity data pulled from the api. Next, the cardUV is being created with a p tag,
+     // this will hold the uvi value that will be pulled from the api. Finally, the uvButton is being created with a button tag,
+     // this button will hold the uvi value.
      var card = document.createElement("div");
      var cardContainer = document.createElement("div");
      var cardHeader = document.createElement("h2");
